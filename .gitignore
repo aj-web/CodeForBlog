@@ -1,0 +1,15 @@
+.DS_Store
+db.json
+*.log
+public/
+.deploy_git/
+
+# IntelliJ project files
+.idea/workspace.xml
+*.iml
+out
+gen
+workspace.xml
+.idea
+.idea/vcs.xml
+
