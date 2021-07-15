@@ -104,6 +104,7 @@ theme: yilia
 deploy:
   type: git
   repository: git@github.com:aj-web/aj-web.github.io.git
+  #repository: https://e.coding.net/ninanlife/myblog/CodeForBlog.git
   branch: master
 
 #“所有文章”按钮的安装
