@@ -1,4 +1,5 @@
 .DS_Store
+Thumbs.db
 db.json
 *.log
 public/
@@ -7,6 +8,7 @@ public/
 # IntelliJ project files
 .idea/workspace.xml
 *.iml
+node_modules/
 out
 gen
 workspace.xml
