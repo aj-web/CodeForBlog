@@ -105,7 +105,7 @@ deploy:
   type: git
   repository:
     github: https://github.com/aj-web/aj-web.github.io.git,master
-    coding: https://e.coding.net/ninanlife/myblog/CodeForBlog.git,master
+    coding: https://e.coding.net/ninanlife/myblog/aj-web.github.io.git,master
 
 
 #“所有文章”按钮的安装
