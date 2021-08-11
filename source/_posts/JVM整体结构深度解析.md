@@ -5,7 +5,7 @@ tags: JVM
 ------
 >前言：为什么要学习JVM？     
 > 一门语言有可能会过时，但是它的思想是不会过时的，尤其是作为JAVA跨平台的核心实现，JVM的思想值每个程序员得学习
-
+<!--more-->
 
 Java Virtual Machine(JVM) 是一种抽象的计算机，基于堆栈架构，它有自己的指令集和内存管理。它加载 class 文件，分析、解释并执行字节码。基本结构如下：
 ![JVM结构](https://raw.githubusercontent.com/aj-web/picturebed/master/JVM%E6%9E%84%E6%88%90.png)
