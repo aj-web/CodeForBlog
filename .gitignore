@@ -14,4 +14,7 @@ gen
 workspace.xml
 .idea
 .idea/vcs.xml
+.gitmodules
+package-lock.json
+.github
 
