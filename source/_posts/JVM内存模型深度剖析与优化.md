@@ -44,8 +44,10 @@ JVM 主要分为以上三个子系统：类加载器、运行时数据区和执�
 # 2.JVM内存参数设置
 ![JVM总体参数](https://raw.githubusercontent.com/aj-web/picturebed/master/JVM%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE.png)     
 - springboot的jvm参数设置格式(Tomcat启动直接加在bin目录下catalina.sh文件里)：
+```
 java -Xms2048M -Xmx2048M -Xmn1024M -Xss512K -XX:MetaspaceSize=256M -XX:MaxMetaspaceSize=256M -jar microservice-eureka-server.jar
 -Xss：每个线程的栈大小
+```
 
 - 关于元空间的JVM参数有两个：  
   -XX:MetaspaceSize=N和  
@@ -60,4 +62,7 @@ java -Xms2048M -Xmx2048M -Xmn1024M -Xss512K -XX:MetaspaceSize=256M -XX:MaxMetasp
 
 结论：
 -Xss设置越小count值越小，说明一个线程栈里能分配的栈帧就越少，但是对JVM整体来说能开启的线程数会更多
-![JVM优化](https://raw.githubusercontent.com/aj-web/picturebed/master/%E4%BA%BF%E7%BA%A7%E6%B5%81%E9%87%8F%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9FJVM%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE%E4%BC%98%E5%8C%96.png)
+
+### 2.1 日均百万级订单交易系统如何设置JVM参数
+![亿级流量JVM参数调优](https://raw.githubusercontent.com/aj-web/picturebed/master/%E4%BA%BF%E7%BA%A7%E6%B5%81%E9%87%8FJVM%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE.png)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结论：通过上面这些内容介绍，大家应该对JVM优化有些概念了，就是尽可能让对象都在新生代里分配和回收，尽量别让太多对象频繁进入老年代，避免频繁对老年代进行垃圾回收，同时给系统充足的内存大小，避免新生代频繁的进行垃圾回收。
