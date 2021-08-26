@@ -97,3 +97,15 @@ gc后无用的对象会被标记，然后进行筛选，如果对象没有覆盖
 1. 该类所有的对象实例都已经被回收，也就是 Java 堆中不存在该类的任何实例。
 2. 加载该类的 ClassLoader 已经被回收。
 3. 该类对应的 java.lang.Class 对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法。
+
+```
+JVM指令：
+1.本地线程分配缓冲（Thread Local Allocation Buffer,TLAB默认开启）：­XX:+/­-UseTLAB，­XX:TLABSize 指定TLAB大小
+2.指针压缩(JDK1.6默认开启):-XX:+/-UseCompressedOops(默认开启)
+3.逃逸分析(JDK1.7默认开启)：-XX:+DoEscapeAnalysis
+4.标量替换(JDK1.7默认开启)：-XX:+EliminateAllocations
+5.Eden与Survivor区占比8:1:1自动变化(默认开启):-XX:+/-UseAdaptiveSizePolicy
+6.设置大对象大小(SerialGC)：-XX:PretenureSizeThreshold=1000000 (单位是字节)  -XX:+UseSerialGC  
+7.设置分代年龄最大值:(-XX:TargetSurvivorRatio)
+8.设置空间分配担保参数：-XX:-HandlePromotionFailure
+```
