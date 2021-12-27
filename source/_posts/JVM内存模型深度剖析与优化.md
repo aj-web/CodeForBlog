@@ -1,6 +1,6 @@
 ---
 title: JVM-1:内存模型深度剖析与优化
-sticky: 11
+top: 11
 tags: JVM
 ------
 >前言：为什么要学习JVM？     

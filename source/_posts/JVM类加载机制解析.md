@@ -1,6 +1,6 @@
 ---
 title: JVM-2：类加载机制解析
-sticky: 12
+top: 12
 tags: JVM
 ------
 
