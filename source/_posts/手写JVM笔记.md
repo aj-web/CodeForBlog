@@ -4,6 +4,9 @@ date: 2021年12月27日15:38:33
 tags: JVM
 ------
 
+>前言：Java创建线程的能力，实际上是通过调用操作系统的能力实现的
+<!--more-->
+
 ## Linux多线程机制：
 
 - Linux创建线程：`pthread_create`  
