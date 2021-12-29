@@ -1,4 +1,7 @@
 ---
 title: {{ title }}
-date: {{ date }}
+date:
+mtime:
+tags:
+categories:
 ---
