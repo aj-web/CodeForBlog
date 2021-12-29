@@ -1,7 +1,8 @@
 ---
 title: JVM-1:内存模型深度剖析与优化
 date: 2021-11-10
-mtime: 2021-11-10
+mtime: 2021-11-10 
+declare: true
 tags: JVM
 ------
 >前言：为什么要学习JVM？     
