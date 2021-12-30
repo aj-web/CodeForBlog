@@ -2,7 +2,8 @@
 title: JVM-2：类加载机制解析
 date: 2021-11-18
 mtime: 2021-11-18
-tags: JVM
+tags: [JVM]
+categories: [JVM]
 ------
 
 # 1.1类加载机制

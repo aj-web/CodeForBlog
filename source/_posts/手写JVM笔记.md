@@ -2,7 +2,8 @@
 title: JVM-5：JVM底层学习
 date: 2021-11-27
 mtime: 2021-11-27
-tags: JVM
+tags: [JVM]
+categories: [JVM]
 ------
 
 >前言：Java创建线程的能力，实际上是通过调用操作系统的能力实现的

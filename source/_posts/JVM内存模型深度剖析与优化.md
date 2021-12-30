@@ -3,7 +3,8 @@ title: JVM-1:内存模型深度剖析与优化
 date: 2021-11-10
 mtime: 2021-11-10 
 declare: true
-tags: JVM
+tags: [JVM]
+categories: [JVM]
 ------
 >前言：为什么要学习JVM？     
 > 一门语言有可能会过时，但是它的思想是不会过时的，尤其是作为JAVA跨平台的核心实现，JVM的思想值每个程序员得学习
