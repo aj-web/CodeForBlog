@@ -81,6 +81,7 @@ categories: [JVM]
 
 
 ### 3.2类加载器初始化过程：
+![Launcher对象](https://raw.githubusercontent.com/aj-web/picturebed/master/Lanucher.png?token=ANGINU7Q6BJHPUSSMFNHPX3CCRLYS)
 参见类运行加载全过程图可知其中会创建JVM启动器实例sun.misc.Launcher。
 在Launcher构造方法内部，其创建了两个类加载器，分别是sun.misc.Launcher.ExtClassLoader(扩展类加载器)和sun.misc.Launcher.AppClassLoader(应用类加载器)。
 JVM默认使用Launcher的getClassLoader()方法返回的类加载器AppClassLoader的实例加载我们的应用程序。
@@ -127,9 +128,9 @@ JVM类加载器是有亲子层级结构的，如下图
 
 ### 3.5类加载源码分析
 我们来看下应用程序类加载器AppClassLoader加载类的双亲委派机制源码，AppClassLoader的loadClass方法最终会调用其父类ClassLoader的loadClass方法，该方法的大体逻辑如下：
-首先，检查一下指定名称的类是否已经加载过，如果加载过了，就不需要再加载，直接返回。
-如果此类没有加载过，那么，再判断一下是否有父加载器；如果有父加载器，则由父加载器加载（即调用parent.loadClass(name, false);）.或者是调用bootstrap类加载器来加载。
-如果父加载器及bootstrap类加载器都没有找到指定的类，那么调用当前类加载器的findClass方法来完成类加载。
+- 首先，检查一下指定名称的类是否已经加载过，如果加载过了，就不需要再加载，直接返回。
+- 如果此类没有加载过，那么，再判断一下是否有父加载器；如果有父加载器，则由父加载器加载（即调用parent.loadClass(name, false);）.或者是调用bootstrap类加载器来加载。
+- 如果父加载器及bootstrap类加载器都没有找到指定的类，那么调用当前类加载器的findClass方法来完成类加载。
 
 ```
 //ClassLoader的loadClass方法，里面实现了双亲委派机制
@@ -175,3 +176,91 @@ protected Class<?> loadClass(String name, boolean resolve)
 
 ### 3.6全盘负责委托机制
 “全盘负责”是指当一个ClassLoder装载一个类时，除非显示的使用另外一个ClassLoder，该类所依赖及引用的类也由这个ClassLoder载入。
+
+### 3.7自定义类加载器
+自定义类加载器需要继承ClassLoader，然后如果想打破双亲委派机制的话，需要重写loadClass方法，上面我们讲了，"如果类没有加载过，那么会判断一下是否有父加载器；如果有父加载器，则由父加载器加载（即调用parent.loadClass(name, false);）.或者是调用bootstrap类加载器来加载"，在这一步，我们就可以替换使用我们自己的类加载器加载，而不去用父类加载器加载。
+```java
+package util;
+
+import java.io.FileInputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+/**
+ * @author chezhijun
+ * @descririon
+ * @date 2022/2/22
+ */
+public class MyClassLoaderTest {
+    static class MyClassLoader extends ClassLoader {
+        private java.lang.String classPath;
+
+        public MyClassLoader(java.lang.String classPath) {
+            this.classPath = classPath;
+        }
+
+        private byte[] loadByte(java.lang.String name) throws Exception {
+            name = name.replace("\\.", "/");
+            FileInputStream fis = new FileInputStream(classPath + "/" + name + ".class");
+            int len = fis.available();
+            byte[] data = new byte[len];
+            fis.read(data);
+            fis.close();
+            return data;
+        }
+
+        protected Class<?> findClass(java.lang.String name) throws ClassNotFoundException {
+            try {
+                byte[] data = loadByte(name);
+                return defineClass(name, data, 0, data.length);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new ClassNotFoundException();
+
+            }
+        }
+
+        /**
+         * 重写类加载方法，实现自己的加载逻辑，不委派给双亲加载
+         *
+         * @param name
+         * @param resolve
+         * @return
+         * @throws ClassNotFoundException 37
+         */
+
+        protected Class<?> loadClass(java.lang.String name, boolean resolve) throws ClassNotFoundException {
+            synchronized (getClassLoadingLock(name)) {
+                //First, check if the class has already been loaded
+                Class<?> c = findLoadedClass(name);
+                if (c == null) {
+                    // If still not found, then invoke findClass in order to find the class.
+                    long t1 = System.nanoTime();
+                    c = findClass(name);
+                    // this is the defining class loader; record the stats
+                    sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);
+                    sun.misc.PerfCounter.getFindClasses().increment();
+
+                }
+                if (resolve) {
+                    resolveClass(c);
+                }
+                return c;
+            }
+        }
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        MyClassLoader classLoader = new MyClassLoader("/Users/a58/Desktop");
+        Class clazz = classLoader.loadClass("String");
+        Object obj = clazz.newInstance();
+        Method method = clazz.getDeclaredMethod("sout", null);
+        method.invoke(obj, null);
+        System.out.println(clazz.getClassLoader().getClass().getName());
+    }
+
+}
+
+```
